@@ -218,13 +218,14 @@ public class CinemaManagement extends Application {
     }
 
     private void removeMovie(int id) {
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:data/database.db")) {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM cinema_schedule WHERE id=?");
+        try  {
+            PreparedStatement statement = dbConnection.prepareStatement("DELETE FROM cinema_schedule WHERE id=?");
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        refreshMovies();
     }
 
     // Inner class for a movie
