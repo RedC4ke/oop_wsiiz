@@ -12,4 +12,6 @@ module com.example.oop_wsiiz {
 
     opens com.example.oop_wsiiz to javafx.fxml;
     exports com.example.oop_wsiiz;
+    exports com.example.oop_wsiiz.models;
+    opens com.example.oop_wsiiz.models to javafx.fxml;
 }

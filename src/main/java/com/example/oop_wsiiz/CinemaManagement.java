@@ -1,5 +1,6 @@
 package com.example.oop_wsiiz;
 
+import com.example.oop_wsiiz.models.Movie;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,8 +18,8 @@ public class CinemaManagement extends Application {
     private final ObservableList<Movie> movies = FXCollections.observableArrayList();
     private Connection dbConnection;
 
-    public static void main(String[] args) {
-        launch(args);
+    public static void main() {
+        launch();
     }
 
     @Override
@@ -43,15 +44,14 @@ public class CinemaManagement extends Application {
         // Show movie details when a movie is selected in the ListView
         movieListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("Title: ").append(newValue.getTitle()).append("\n");
-                sb.append("Director: ").append(newValue.getDirector()).append("\n");
-                sb.append("Release Year: ").append(newValue.getReleaseYear()).append("\n");
-                sb.append("Start Time: ").append(newValue.getStartTime()).append("\n");
-                sb.append("Duration: ").append(newValue.getDuration()).append("\n");
-                sb.append("Ticket Price: ").append(newValue.getTicketPrice()).append("\n");
-                sb.append("Room ID: ").append(newValue.getRoomId()).append("\n");
-                movieDetailsTextArea.setText(sb.toString());
+                String sb = "Title: " + newValue.title() + "\n" +
+                        "Director: " + newValue.director() + "\n" +
+                        "Release Year: " + newValue.releaseYear() + "\n" +
+                        "Start Time: " + newValue.startTime() + "\n" +
+                        "Duration: " + newValue.duration() + "\n" +
+                        "Ticket Price: " + newValue.ticketPrice() + "\n" +
+                        "Room ID: " + newValue.roomId() + "\n";
+                movieDetailsTextArea.setText(sb);
             } else {
                 movieDetailsTextArea.setText("");
             }
@@ -70,9 +70,7 @@ public class CinemaManagement extends Application {
 
         // Create an "Add" button and add it to the HBox
         Button addButton = new Button("Add");
-        addButton.setOnAction(event -> {
-            addMovie();
-        });
+        addButton.setOnAction(event -> addMovie());
 
         buttons.getChildren().add(addButton);
 
@@ -82,7 +80,7 @@ public class CinemaManagement extends Application {
             Movie selectedMovie = movieListView.getSelectionModel().getSelectedItem();
             if (selectedMovie != null) {
                 movies.remove(selectedMovie);
-                removeMovie(selectedMovie.getId());
+                removeMovie(selectedMovie.id());
             }
         });
         buttons.getChildren().add(removeButton);
@@ -226,66 +224,6 @@ public class CinemaManagement extends Application {
             e.printStackTrace();
         }
         refreshMovies();
-    }
-
-    // Inner class for a movie
-    private class Movie {
-        private final int id;
-        private final String title;
-        private final String director;
-        private final int releaseYear;
-        private final String startTime;
-        private final int duration;
-        private final double ticketPrice;
-        private final int roomId;
-
-        public Movie(int id, String title, String director, int releaseYear, String startTime, int duration, double ticketPrice, int roomId) {
-            this.id = id;
-            this.title = title;
-            this.director = director;
-            this.releaseYear = releaseYear;
-            this.startTime = startTime;
-            this.duration = duration;
-            this.ticketPrice = ticketPrice;
-            this.roomId = roomId;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public String getDirector() {
-            return director;
-        }
-
-        public int getReleaseYear() {
-            return releaseYear;
-        }
-
-        public String getStartTime() {
-            return startTime;
-        }
-
-        public int getDuration() {
-            return duration;
-        }
-
-        public double getTicketPrice() {
-            return ticketPrice;
-        }
-
-        public int getRoomId() {
-            return roomId;
-        }
-
-        @Override
-        public String toString() {
-            return title + " (" + releaseYear + ") directed by " + director;
-        }
     }
 }
 
